@@ -822,14 +822,14 @@
 		Either~update~your~TeX-distribution~or~switch~to~pdfa=false.
 	}{See~DEMO-tudapub~for~further~information.}
 
+%	[M. J. Steil, 2023.06.13, Disabled some unnecessary warnings]
+%	\sys_if_engine_pdftex:T {
+%		\msg_warning:nnn{tudapub} {prefer-lualatex} {PDFTeX}
+%	}
 
-	\sys_if_engine_pdftex:T {
-		\msg_warning:nnn{tudapub} {prefer-lualatex} {PDFTeX}
-	}
-
-	\sys_if_engine_xetex:T {
-		\msg_warning:nnn{tudapub} {prefer-lualatex} {XeTeX}
-	}
+%	\sys_if_engine_xetex:T {
+%		\msg_warning:nnn{tudapub} {prefer-lualatex} {XeTeX}
+%	}
 
 	\@ifpackagelater{xmpincl}{2021/09/22}{
 	}{
