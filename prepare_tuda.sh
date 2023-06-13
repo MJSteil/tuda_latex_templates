@@ -14,7 +14,7 @@ mv DEMO-*.pdf ../texmf/doc/latex/tuda-ci
 cd ..
 
 cp -r tex/. texmf/tex/latex/tuda-ci/.
-cp ~/tuda_logo.pdf texmf/tex/latex/tuda-ci/.
+cp tuda_logo.pdf texmf/tex/latex/tuda-ci/.
 
 mkdir -p texmf/doc/latex/tuda-ci/example
 cp example/*.tex texmf/doc/latex/tuda-ci/example/.
