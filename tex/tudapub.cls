@@ -536,10 +536,10 @@
 
 \RequirePackage{trimclip}
 
-\NewDocumentCommand{\titlegraphic}{sm}{
+\NewDocumentCommand{\titlegraphic}{som}{ %[M. J. Steil, 2023.08.03, Added optional ]
 	\IfBooleanTF{#1}{
 		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl  {
-			\hbox_set:Nn \l__ptxcd_titlegraphic_box {\raisebox{\depth}{#2}}
+			\hbox_set:Nn \l__ptxcd_titlegraphic_box {\raisebox{\depth}{#3}}
 			\box_resize_to_wd:Nn \l__ptxcd_titlegraphic_box {\width}
 			\dim_compare:nTF {\box_ht:N \l__ptxcd_titlegraphic_box -\height> \c_zero_dim}
 			{
@@ -552,7 +552,12 @@
 			}
 		}
 	}{
-		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl {#2}
+		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl {#3}
+	}
+	\IfNoValueTF{#1}{
+		\def\g_ptxcd_titlegraphic_credit{#2}
+	}{
+		\def\g_ptxcd_titlegraphic_credit{}
 	}
 }
 
