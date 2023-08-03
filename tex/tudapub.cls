@@ -554,10 +554,10 @@
 	}{
 		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl {#3}
 	}
-	\IfNoValueTF{#1}{
-		\def\g_ptxcd_titlegraphic_credit{#2}
+	\IfNoValueTF{#2}{
+		\tl_gset:Nn \g_ptxcd_titlegraphic_credit{}
 	}{
-		\def\g_ptxcd_titlegraphic_credit{}
+		\tl_gset:Nn \g_ptxcd_titlegraphic_credit{#2}
 	}
 }
 
