@@ -531,12 +531,14 @@
 %Titelseite
 \tl_new:N  \g_ptxcd_titleimage_code_tl
 \tl_gset_eq:NN  \g_ptxcd_titleimage_code_tl \c_empty_tl
-\newcommand{\titleimage}[1]{\tl_gset:Nn \g_ptxcd_titleimage_code_tl {#1}}
+\tl_new:N  \g_ptxcd_titlegraphic_credit
+\tl_gset_eq:NN  \g_ptxcd_titlegraphic_credit \c_empty_tl %[M. J. Steil, 2023.08.03, Added g_ptxcd_titleimage_code_tl and set to empty]
+%\newcommand{\titleimage}[1]{\tl_gset:Nn \g_ptxcd_titleimage_code_tl {#1}} %[M. J. Steil, 2023.08.03, Commented out since its redundant]
 \box_new:N \l__ptxcd_titlegraphic_box
 
 \RequirePackage{trimclip}
 
-\NewDocumentCommand{\titlegraphic}{som}{ %[M. J. Steil, 2023.08.03, Added optional ]
+\NewDocumentCommand{\titlegraphic}{som}{ %[M. J. Steil, 2023.08.03, Added optional arg to set g_ptxcd_titleimage_code_tl]
 	\IfBooleanTF{#1}{
 		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl  {
 			\hbox_set:Nn \l__ptxcd_titlegraphic_box {\raisebox{\depth}{#3}}
@@ -555,7 +557,6 @@
 		\tl_gset:Nn  \g_ptxcd_titleimage_code_tl {#3}
 	}
 	\IfNoValueTF{#2}{
-		\tl_gset:Nn \g_ptxcd_titlegraphic_credit{}
 	}{
 		\tl_gset:Nn \g_ptxcd_titlegraphic_credit{#2}
 	}
