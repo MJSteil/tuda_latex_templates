@@ -1,9 +1,36 @@
+%% This is file `tudapub.cls' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% ============================================================================
+%%
+\def\fileversion{3.36}
+\def\filedate{2024-01-05}
 \NeedsTeXFormat{LaTeX2e}
-\RequirePackage{expl3}
+
 \ProvidesExplClass{tudapub}
 	{\filedate}{\fileversion}{Publications using TU Darmstadt's Corporate Design (TUDa-CI)}
-
-\RequirePackage{l3keys2e}
 \RequirePackage{URspecialopts}
 
 \Define@specialopt@Module[ptxcd/pub]
@@ -81,7 +108,7 @@
 	headline .initial:n =false,
 	colorback .bool_gset:N = \g_ptxcd_colorback_bool,
 	colorback .initial:n = true,
-	colorback / title .code:n = 
+	colorback / title .code:n =
 		\bool_gset_true:N \g_ptxcd_colorbacktitle_bool
 		\bool_gset_true:N \g_ptxcd_colorback_bool
 		\bool_gset_false:N \g_ptxcd_colorbacksubtitle_bool,
@@ -89,13 +116,15 @@
 		\bool_gset_false:N \g_ptxcd_colorbacktitle_bool
 		\bool_gset_false:N \g_ptxcd_colorbacksubtitle_bool
 		\bool_gset_true:N \g_ptxcd_colorback_bool,
-	colorback / head .code:n = 
+	colorback / head .code:n =
 		\bool_gset_true:N \g_ptxcd_colorbacktitle_bool
 		\bool_gset_true:N \g_ptxcd_colorback_bool
 		\bool_gset_true:N \g_ptxcd_colorbacksubtitle_bool,
 	colortitleback .code:n =  \msg_error:nnx {tudapub} {compatibility-only} {\l_keys_key_tl},
 	pdfa .bool_gset:N = \g_ptxcd_pdfa_bool,
 	pdfa .initial:n = true,
+	pdfx .bool_gset:N = \g_ptxcd_pdfx_bool,
+	pdfx .initial:n = true,
 	twocolumn .bool_gset:N = \g_ptxcd_twocolumn_bool,
 	twocolumn .default:n = true,
 	twocolumn .initial:n = false,
@@ -165,12 +194,39 @@
 
 \Module@Process@SpecialOptions[ptxcd/pub]
 
-\ProcessKeysOptions{ptxcd/pub}
+\ProcessKeyOptions[ptxcd/pub]
 
+\bool_if:NF \g_ptxcd_pdfa_bool {\bool_gset_false:N \g_ptxcd_pdfx_bool}
 
-%Option adjustments required for valid PDF/A
-\bool_if:NT  \g_ptxcd_pdfa_bool {
-  \PassOptionsToPackage{RGB}{xcolor}
+\bool_if:NT \g_ptxcd_pdfa_bool {
+	\msg_new:nnn {tudapub} {colors-to-rgb} {
+			You~did~not~add~a~color~profile.\\
+			I~will~use~the~default~one~and~automatically~try~to~convert~internal~colors~to~RGB.\\
+			This~is~required~to~be~able~to~create~PDF/A~compliance.
+	}
+
+	\cs_if_exist:NT \pdfmeta_standard_get:nN {
+		\pdfmeta_standard_get:nN  {outputintent_A} \l_tmpa_tl
+		\quark_if_no_value:NF \l_tmpa_tl  {
+			\bool_gset_false:N \g_ptxcd_pdfx_bool
+			\msg_new:nnn{tudapub} {prefer-lualatex} {
+				I~detected~usage~of~l3pdfmeta~(\DocumentMetadata)~to~create~PDF/A.\\
+				tudapub~will~not~load~pdfx~to~avoid~conflicts.\\
+				To~disable this message use pdfx=false.
+			}
+			\msg_info:nn {tudapub} {prefer-lualatex}
+		}
+
+		\prop_if_in:NnF \g__pdfmeta_outputintents_prop {GTS_PDFA1} {
+			\PassOptionsToPackage{rgb}{xcolor}
+			\msg_info:nn {tudapub} {colors-to-rgb}
+		}
+	}
+}
+
+\bool_if:NT \g_ptxcd_pdfx_bool {
+	\PassOptionsToPackage{rgb}{xcolor}
+	\msg_info:nn {tudapub} {colors-to-rgb}
 }
 
 \exp_args:Nx \tl_if_eq:nnT {\prop_item:Nn \g_ptxcd_clsopts_prop {fontsize}} {9pt}
@@ -333,6 +389,11 @@
 %Has to be loaded here due to headwidth options
 \usepackage[draft=false]{scrlayer-scrpage}
 
+\AddToHook{begindocument}[tudapub:BCOR-titlepage]{
+	\bool_if:NT  \g_ptxcd_BCOR_titlepage_bool
+		{\xdef\coverpageleftmargin{\the\dimexpr\coverpageleftmargin+\the\ta@bcor}}
+}
+
 \bool_if:NTF  \g_ptxcd_geometry_bool {
 	\RequirePackage{geometry}
 	\geometry{
@@ -353,7 +414,7 @@
 	\savegeometry{TUDa-marginpar}
 
 	\bool_if:NTF \g_ptxcd_custommargins_bool {
-		\AtBeginDocument{
+		\AddToHook{begindocument}[tudapub:custommargins]{
 			\savegeometry{TUDa-default}
 			\bool_if:NTF  \g_ptxcd_marginpar_bool {
 				\dim_gset:Nn \g_ptxcd_headwidth_dim {\textwidth+\marginparwidth+\marginparsep}
@@ -368,16 +429,21 @@
 		}  {
 			\tl_const:Nn \c_ptxcd_default_geometry_tl {TUDa-nomarginpar}
 		}
-		\AtBeginDocument{
+		\AddToHook{begindocument}[tudapub:custommargins-geometry]{
 			\loadgeometry{\c_ptxcd_default_geometry_tl}
-			\bool_if:NT \g_ptxcd_BCOR_titlepage_bool {\xdef\coverpageleftmargin{\the\dimexpr\coverpageleftmargin+\the\ta@bcor}}
 		}
 	}
 
-	\dim_gset:Nn \g_ptxcd_headwidth_dim 			  {\paperwidth-\g_ptxcd_innerMargin_dim-\g_ptxcd_outerMargin_dim-\Gm@bindingoffset}
+	\dim_gset:Nn \g_ptxcd_headwidth_dim {\paperwidth-\g_ptxcd_innerMargin_dim-\g_ptxcd_outerMargin_dim-\Gm@bindingoffset}
 
 	\cs_set:Nn \ptxcd_disable_marginpar: {\loadgeometry{TUDa-nomarginpar}}
 	\cs_set:Nn \ptxcd_restore_typearea: {\loadgeometry{\c_ptxcd_default_geometry_tl}}
+
+	\AddToHook{cmd/Gm@changelayout/after}[tudapub-restore-headwidth]{
+		\bool_if:NTF \g_ptxcd_marginpar_bool
+			{\KOMAoptions{headwidth=textwithmarginpar,footwidth=textwithmarginpar}}
+			{\KOMAoptions{headwidth=text,footwidth=text}}
+	}
 
 }{
 	\let\ptxcd_disable_marginpar:\relax
@@ -420,7 +486,7 @@
 \bool_if:NT \g_ptxcd_headline_bool {\KOMAoptions{headsepline=.5\c_ptxcd_smallrule_dim}}
 
 %Adjust headheight
-\AtBeginDocument{
+\AddToHook{begindocument}[tudapub:adjust-headheight]{
 \bool_if:NTF \g_ptxcd_marginpar_bool
 	{
 		\KOMAoptions {
@@ -633,7 +699,7 @@
 		+\c_ptxcd_rulesep_dim
 	]{title.TUDa.image}
 
-	\bool_if:NT \g_ptxcd_colorbacktitle_bool {		
+	\bool_if:NT \g_ptxcd_colorbacktitle_bool {
 		\ModifyLayer[
 			textarea,
 			addvoffset=\dim_eval:n {\box_ht:N \ptxcd_headrule_box+\box_dp:N \ptxcd_headrule_box-\g_ptxcd_titlerule_dim},
@@ -738,7 +804,7 @@
 		\tl_if_empty:NTF \g_ptxcd_titleimage_code_tl
 		{
 			\bool_if:NF \g_ptxcd_colorbacktitle_bool
-			{ 
+			{
 				\bool_if:NT \g_ptxcd_colorback_bool {\putLL{\color{identbarcolor}\rule{\layerwidth}{\layerheight}}}
 			}
 		}
@@ -812,7 +878,7 @@
 %Logos
 \RequirePackage{graphicx}
 
-\if_bool:N \g_ptxcd_pdfa_bool
+\if_bool:N \g_ptxcd_pdfx_bool
 
 	\msg_new:nnn{tudapub} {prefer-lualatex} {
 	You~use~pdfa-mode~in~#1.\\
@@ -847,9 +913,8 @@
 		\msg_error:nn{tudapub}  {outdated-package-pdfa} {pdfx}
 	}
 
-
 	%%hyperref
-	\hypersetup{hidelinks, unicode}
+	\hypersetup{hidelinks, unicode,pdfa}
 	\iow_new:N \ptxcd_xmpdata_stream
 	\tl_new:N \g_ptxcd_xmp_title_tl
 	\tl_new:N \g_ptxcd_xmp_author_tl
@@ -916,17 +981,70 @@
 	}
 
 	\msg_new:nnnn{tudapub} {unknown-metadata} {
-	You~ used~ the~ #1~ metadata~ entry.\\
-	I~ don't~ know~ how~ to~ handle~ that.\\
-	It~ will~ be~ ignored.
+		You~ used~ the~ #1~ metadata~ entry.\\
+		I~ don't~ know~ how~ to~ handle~ that.\\
+		It~ will~ be~ ignored.
 	} {See~ TUDa-CI~ or~ pdfx~ documentation~ for~ details.}
 \else:
-	\msg_new:nnn{tudapub} {no-pdfa}{The~ tudapub~ class~ won't~ create~ PDF/A-mode.}
-	\msg_info:nn{tudapub} {no-pdfa}
-	%%hyperref
-	\RequirePackage[hidelinks, unicode]{hyperref}
+	\PassOptionsToPackage{hidelinks, unicode}{hyperref}
+	\RequirePackage{hyperref}
+	\hypersetup{pdfcreator=LaTeX~using~TUDa-CI}
 
-	\newcommand{\Metadata}[1]{\ClassError{tudapub}{You~cannot~use~\string\Metadata\ ~with~pdfa=false.}{}}
+	\msg_new:nnnn {tudapub} {metadata-to-hypersetup} {
+		You~don't~use~pdfx.\\
+		Here~the~\string\Metadata\~command~only~exists~for~compatibility~reasons.\\
+		I~will~pass~the~data~to~ḩypersetup.
+	}{
+		If~possible~please~use~hyperref's~\strung\hypersetup~command~for~the~metadata~directly.\\
+		See~hyperref~documentation~for~details~on~usage.
+	}
+
+	\newcommand*{\Metadata}[1]{
+		\tl_set:Nn \l_tmpa_tl {#1}
+		\tl_replace_all:Nnn \l_tmpa_tl {\sep} {;~}% pdfx-Syntax compatibility
+		\clist_map_inline:Nn \l_tmpa_tl {
+			\exp_args:Nx \hypersetup{pdf\tl_trim_spaces:n {##1}}
+		}
+		\msg_warning:nn {tudapub} {metadata-to-hypersetup}
+	}
+
+
+	\cs_new:Nn \ptxcd_pass_TitleData: {
+		% check if pdfmanagement is active
+		\prop_if_exist:NTF \g__pdfmanagement_documentproperties_prop {
+			\prop_set_eq:NN \l_tmpa_prop \g__pdfmanagement_documentproperties_prop
+		} {
+			\prop_set_eq:NN \l_tmpa_prop   \g__hyp_documentproperties_prop
+		}
+
+		% title
+		\prop_if_in:NnF \l_tmpa_prop {hyperref/pdftitle} {
+			\begingroup
+			\def\newline{}
+			\def\\{}
+			\let\thanks\use_none:n
+			\tl_gset:Nf \g_tmpa_tl {\@title}
+			\endgroup
+			\hypersetup{pdftitle={\tl_to_str:V \g_tmpa_tl}}
+		}
+
+		% author
+		\prop_if_in:NnF \l_tmpa_prop {hyperref/pdfauthor} {
+			\begingroup
+				\def\newline{}
+				\def\\{}
+				\let\thanks\use_none:n
+				\tl_gset:Nx \g_tmpa_tl {\seq_use:Nn \g_ptxcd_author_seq {\exp_not:N \and}}
+				\tl_gset:Nx \g_tmpa_tl  {\g_tmpa_tl }
+			\endgroup
+			\hypersetup{pdfauthor=\g_tmpa_tl}
+		}
+	}
+
+	\bool_if:NF \g_ptxcd_pdfa_bool {
+		\msg_new:nnn{tudapub} {no-pdfa}{The~ tudapub~ class~ won't~ create~ PDF/A-mode.}
+		\msg_info:nn{tudapub} {no-pdfa}
+	}
 \fi:
 
 \box_new:N  \g_ptxcd_sponsor_box

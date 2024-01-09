@@ -1,8 +1,8 @@
 # TUDa-CI – Corporate Design LaTeX-Templates for TU Darmstadt
 
- Copyright (C) Marei Peischl <marei@peitex.de>, 2018–2023
+ Copyright (C) Marei Peischl <marei@peitex.de>, 2018–2024
 
- tuda-ci 2023/04/24 v3.30
+ tuda-ci v3.36 (2024-01-05)
 
 ***************************************************************************
 
@@ -25,7 +25,7 @@ Derzeit existieren diese Templates nur in Deutscher Sprache.
 
 ## Support und Hilfe
 
-Die ULB bietet über das Team Infokompetenz LaTeX-Support und insbesondere Hilfe bei der Verwendung von TUDa-CI an. (https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/texte_verarbeiten/latex/index.de.jsp). Darüber hinaus findet auch die Sprechstunde wieder statt. Die Termine zu allen Lernformaten finden sich unter https://www.ulb.tu-darmstadt.de/lernen_arbeiten/lehr_und_lernformate/textverarbeitung/textverarbeitung.de.jsp
+Die ULB bietet über das Team Infokompetenz LaTeX-Support und insbesondere Hilfe bei der Verwendung von TUDa-CI an. (https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/dokumente_erstellen/latex/index.de.jsp). Darüber hinaus findet auch die Sprechstunde wieder statt. Die Termine zu allen Lernformaten finden sich unter https://www.ulb.tu-darmstadt.de/lernen_arbeiten/lehr_und_lernformate/textverarbeitung/textverarbeitung.de.jsp
 
 ## Verwendungshinweis
 Die Richtlinien des Corporate Designs (https://www.intern.tu-darmstadt.de/media/medien_stabsstelle_km/services/medien_cd/das_bild_der_tu_darmstadt.pdf), sowie die Anforderungen der Universitätsbibliothek erfordern einige spezielle Konfigurationen. Beispielsweise ist für wissenschaftliche Veröffentlichungen und Abschlussarbeiten die Erzeugung einer archivierbaren PDF-Datei (PDF/A) vorgesehen.
@@ -67,7 +67,7 @@ Die verwendeten Logos sind nicht Bestandteil dieses Bundles und können von Mitg
 https://download.hrz.tu-darmstadt.de/protected/ULB/tuda_logo.pdf
 
 Für die permanente Installation der Logodateien findet sich unter
-https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/texte_verarbeiten/latex/index.de.jsp
+https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/dokumente_erstellen/latex/index.de.jsp
 ein Paket mit entsprechenden Hinweisen.
 
 Für Nicht-Mitglieder ist eine Möglichkeit zur Platzierung eines Ersatzlogos dokumentiert.
@@ -146,7 +146,7 @@ If you are not a German speaker and require some help using these files, please 
 
 ## Support
 
-ULB is offering support for LaTeX in general and TUDa-CI. Contact email address can be found at https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/texte_verarbeiten/latex/index.en.jsp. Additionally there is a TeXnical office hour. Questions can also be answered in English. The dates can be found at  https://www.ulb.tu-darmstadt.de/lernen_arbeiten/lehr_und_lernformate/textverarbeitung/textverarbeitung.en.jsp searching for “TeXnische Sprechstunde”.
+ULB is offering support for LaTeX in general and TUDa-CI. Contact email address can be found at https://www.ulb.tu-darmstadt.de/finden_nutzen/medien_nutzen/dokumente_erstellen/latex/index.en.jsp. Additionally there is a TeXnical office hour. Questions can also be answered in English. The dates can be found at  https://www.ulb.tu-darmstadt.de/lernen_arbeiten/lehr_und_lernformate/textverarbeitung/textverarbeitung.en.jsp searching for “TeXnische Sprechstunde”.
 
 ## Installation
 TUDa-CI is part of the popular TeX distributions ([MikTeX](https://miktex.org/download) & [TeX Live](https://tug.org/texlive/), which is included by [MacTeX](https://www.tug.org/mactex/)).
@@ -339,4 +339,19 @@ leaflets 				| DEMO-TUDaLeaflet.tex							| tudaleaflet.cls
    - Add affidavit option to remove subject specific information
    - Fix titleblock caclulation with tudasciposter
    - Extend points mechanism to allow acessing subtask points
-   
+  * 3.31 (2023-06-16)
+   - Update the digital affidavit text
+   - Fix bug in calculation of points using subtasks in tudaexercise
+  * 3.32 (2023-06-19)
+    - remove affidavit=print
+   * 3.33 (2023-07-05)
+    - disable affidavit by default, see https://github.com/tudace/tuda_latex_templates/issues/432 for more information
+    - rename color={} option of tudabeamer to tudacolors={} to avoid conflicts with siunitx
+   * 3.34 (2023-07-12)
+     - fix typo in affidavit
+   * 3.35 (2023-12-11)
+     - first CTAN release of the new slide layout
+     - fix issues with headwidth calculation if custommargins=true is used
+   * 3.36 (2024-01--05)
+      - compatibility to create PDF/A via pdfmangement
+     - small adjustments for \tuprints

@@ -1,3 +1,11 @@
+%% This is file `tudalettersize10pt.clo' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
 %% This file is a slightly modified version of scrsize10pt.clo
 %% generated with the docstrip utility, extended by scrdocstrip.
 %% modified by Marei Peischl <marei@peitex.de>
@@ -24,7 +32,7 @@
 %%
 %% This work has the LPPL maintenance status `maintained'.
 %%
-%% The Current Maintainers of this work are Marei Peischl <kontakt@peitex.de> and Markus Lazanowski <latex@ce.tu-darmstadt.de>.
+%% The Current Maintainers of this work are Marei Peischl <kontakt@peitex.de>.
 %%
 %%
 \ProvidesFile{%

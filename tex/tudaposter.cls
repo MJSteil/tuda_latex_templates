@@ -1,8 +1,35 @@
+%% This is file `tudaposter.cls' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% ============================================================================
+%%
+\def\fileversion{3.36}
+\def\filedate{2024-01-05}
 \NeedsTeXFormat{LaTeX2e}
-\RequirePackage{expl3}
-\ProvidesExplPackage{tudaposter}{\filedate}{\fileversion}{Poster Layouts for the Corporate Design of TU Darmstadt}
 
-\RequirePackage{l3keys2e}
+\ProvidesExplPackage{tudaposter}{\filedate}{\fileversion}{Poster Layouts for the Corporate Design of TU Darmstadt}
 
 \bool_new:N \g_ptxcd_logo_inhead_bool
 \dim_new:N \g_ptxcd_margin_dim
@@ -29,7 +56,6 @@
 	footheight .dim_gset:N = \g_ptxcd_footheight_dim,
 	paper .choices:nn = {a0,a1,a2,a3,a4}{
 		\int_gset_eq:NN \g_ptxcd_paper_int  \l_keys_choice_int
-		\exp_args:Nx \PassOptionsToPackage{paper=\l_keys_choice_tl}{tudarules}
 		\tl_gset_eq:NN \g_ptxcd_paper_tl \l_keys_choice_tl
 	},
 	fontsize .choice:,
@@ -87,7 +113,7 @@
 	departmentlogofile .initial:n =,
 }
 
-\ProcessKeysOptions{ptxcd/poster}
+\ProcessKeyOptions[ptxcd/poster]
 
 \ExplSyntaxOff
 \LoadClass[parskip=half-]{scrartcl}
@@ -125,7 +151,9 @@
 
 \RequirePackage{tudafonts}
 \renewcommand*{\familydefault}{\sfdefault}
-\RequirePackage[paper=\g_ptxcd_paper_tl,mode=tikz]{tudarules}
+
+\exp_args:Nx \PassOptionsToPackage{paper=\g_ptxcd_paper_tl , mode=tikz}{tudarules}
+\RequirePackage{tudarules}
 
 \RequirePackage{tudacolors}
 \RequirePackage{qrcode}

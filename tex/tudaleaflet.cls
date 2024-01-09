@@ -1,8 +1,35 @@
+%% This is file `tudaleaflet.cls' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% ============================================================================
+%%
+\def\fileversion{3.36}
+\def\filedate{2024-01-05}
 \NeedsTeXFormat{LaTeX2e}
-\RequirePackage{expl3}
-\ProvidesExplPackage{tudaleaflet}{\filedate}{\fileversion}{Leaflets using the Corporate Design of TU Darmstadt}
 
-\RequirePackage{l3keys2e}
+\ProvidesExplPackage{tudaleaflet}{\filedate}{\fileversion}{Leaflets using the Corporate Design of TU Darmstadt}
 
 \str_const:Nn \c__ptxcd_base_str {leaflet}
 
@@ -44,7 +71,7 @@
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{leaflet}}
 
-\ProcessKeysOptions{ptxcd/leaflet}
+\ProcessKeyOptions[ptxcd/leaflet]
 \ProcessOptions\relax
 
 \bool_if:NT \g_ptxcd_colorbacksubtitle_bool {

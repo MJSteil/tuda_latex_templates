@@ -1,8 +1,8 @@
 # TUDa-CI – Installation Notes for manual installation (Not recommended! See README.md for more information)
 
- Copyright (C) Marei Peischl <marei@peitex.de>, 2018–2023
+Copyright (C) Marei Peischl <marei@peitex.de>, 2018–2024
 
- tuda-ci 2022/03/25
+tuda-ci v3.36 (2024-01-05)
 
 If you only create demo files, have a look at DEMO.md.
 
@@ -12,14 +12,20 @@ If you only create demo files, have a look at DEMO.md.
 
 # Installation der TUDa-CI-Templates aus dem GitHub Repository
 
-Um den Prozess der Weiterverarbeitung zu vereinfachen, wurde ein Script erstellt, dass die Versionsinfos ergänzt. Diese Daten werden jedoch für den Kompilierungsprozess benötigt. Sofern Sie nicht wissen, wie sie mir den folgenden Erläuterungen umgehen, benutzen Sie bitte eines der fertigen Release Bundles.
+Fur eine lokale installation existiert ab Version 4.00 ein l3build Script. Dies kann über
 
-Grundsätzlich genügt es, nach dem Klonen das Skript `addlicense.sh` auszuführen. Es ergänzt an allen Dateien die Lizenzinformationen. Ohne diese Angabe ist das Bundle derzeit nicht kompiliertbar.
+```
+l3build install
+```
 
-Die übrigen Scripte, *prepare_ctan.sh* und *prepare_tuda.sh* sind nicht wirklich Bestandteil des Codes. Sie werden hier archiviert, jedoch lediglich für die Vorbereitung der Releases genutzt. Für die Anwendung spielen sie keine weitere Bedeutung und ihre Konfiguration ist teilweise auf lokale Systeme abgestimmt.
+Die enthaltenden Dateien für das lokale Benutzerkonto installieren. In diesem Fall werden allerdings keine automatischen Updates ausgeführt. Hierfür sollte eine Installation über CTAN bevorzugt werden.
 
 # How to install TUDa-CI dev-Version from the GitHub Repository
 
-To simplify the release process, we decided to add the version information using a script. This script is [addlicense.sh](https://github.com/tudace/tuda_latex_templates/blob/master/addlicense.sh). It's a bash script and will add the required data. If you don't know how to run this, please use the Released CTAN-zip bundles.
+To install TUDa-CI for a single user the bundle contains a l3build script since version 4.00. You can use it to install by running
 
-The scripts *prepare_tuda.sh* and *prepare_ctan.sh* are not required. Those are just scripts to prepare the bundles for releases. Users usually should not use them.
+```
+l3build install
+```
+
+This will install the package files to your users own TEXMFHOME directory. This cannot be use for automatic updates. In any way you should prefer the installation via CTAN.

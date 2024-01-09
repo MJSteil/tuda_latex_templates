@@ -1,4 +1,5 @@
 #!/bin/bash
+
 rm -f tuda_templates.zip
 mkdir -p texmf
 rm -rf texmf/*

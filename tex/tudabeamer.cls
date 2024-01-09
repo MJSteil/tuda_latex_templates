@@ -1,15 +1,41 @@
+%% This is file `tudabeamer.cls' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% ============================================================================
+%%
+\def\fileversion{3.36}
+\def\filedate{2024-01-05}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{tudabeamer}
  [\filedate\space\fileversion\space]
 
-\RequirePackage{l3keys2e}
-\RequirePackage{URspecialopts}
-
-\Define@specialopt@Module[ptxcd/beamer]
 \PassOptionsToClass{10pt}{beamer}
 
 \ExplSyntaxOn
 \str_new:N \g_ptxcd_department_str
+\tl_new:N \g__ptxcd_design_tl
 \keys_define:nn {ptxcd/beamer} {
 	accentcolor .code:n = \PassOptionsToPackage{accentcolor=#1}{tudacolors},
 	colorframetitle .code:n = \exp_args:Nx \PassOptionsToPackage{\l_keys_key_tl=#1}{beamercolorthemeTUDa}
@@ -42,23 +68,32 @@
 	mecheng .meta:n = {department=mecheng},
 	departmentlogofile .tl_gset:N = \g_ptxcd_departmentlogo_tl,
 	departmentlogofile .initial:n =,
-	color .code:n =
-	 \tl_if_in:nnTF {#1} {=} {
+	color .code:n = {
+		\tl_if_in:nnTF {#1} {=} {
+			\msg_new:nnn {tudabeamer} {color-option-warning} {
+				The~color~option~should~no~longer~be~used~to~pass~options~to~the~tudacolors~package.\\
+				Please~use~tudacolors={##1}~instead~of~color={##1}.\\
+				See~the~tudabeamer~documentation~for~more~information.
+			}
+			\msg_warning:nnn {tudabeamer} {color-option-warning} {#1}
 			\PassOptionsToPackage{#1}{tudacolors}
 		} {
 			\PassOptionsToPackage{color=#1}{tudacolors}
 		}
+	},
+	tudacolors .code:n = \PassOptionsToPackage{#1}{tudacolors},
+	design .choice:,
+	design / 2023 .code:n = {
+		\tl_gset:Nn  \g__ptxcd_design_tl {2023}
+		\PassOptionsToClass{aspectratio=169}{beamer}
+	},
+	design / 2008 .code:n = {
+		\tl_gset:Nn  \g__ptxcd_design_tl {2008}
+	},
+	design .initial:n = 2008,
+	design2023 .meta:n = {design=2023},
+	design2008 .meta:n = {design=2008},
 }
-
-
-\clist_map_inline:nn {colortitle, colorbacktitle, colorback} {
-	\Module@DeclarePassOption[ptxcd/beamer]{#1}{beamercolorthemeTUDa}
-}
-
-\clist_map_inline:nn {centerframetitle, logo, headsepline} {
-		\Module@DeclarePassOption[ptxcd/beamer]{#1}{beamerouterthemeTUDa}
-}
-\Module@DeclarePassOption[ptxcd/beamer]{authorontitle}{beamerinnerthemeTUDa}
 
 \ExplSyntaxOff
 
@@ -67,13 +102,11 @@
 \PassOptionsToPackage{pdfpagelabels=false,plainpages=false}{hyperref}
 \PassOptionsToClass{t}{beamer}
 
-\Module@Process@SpecialOptions[ptxcd/beamer]
-
 \DeclareOption*{%
 	\PassOptionsToClass{\CurrentOption}{beamer}
 }
 
-\ProcessKeysOptions{ptxcd/beamer}
+\ProcessKeyOptions[ptxcd/beamer]
 \ProcessOptions*
 
 \ExplSyntaxOn
@@ -192,7 +225,7 @@
 \str_if_empty:NF \g_ptxcd_department_str {}
 
 % Load the TUDa theme
-\usetheme{TUDa}%
+\usetheme{TUDa\g__ptxcd_design_tl}%
 \@input{\jobname.len}%
 \@starttoc{len}%
 \let\accentfont\normalfont%

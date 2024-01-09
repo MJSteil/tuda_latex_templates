@@ -1,8 +1,35 @@
+%% This is file `tudacolors.sty' version 3.36 (2024-01-05),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% ============================================================================
+%%
+\def\fileversion{3.36}
+\def\filedate{2024-01-05}
 \NeedsTeXFormat{LaTeX2e}
-\RequirePackage{expl3}
-\ProvidesExplPackage{tudacolors}{\filedate}{\fileversion}{Color definition for TU Darmstadt's tuda-ci bundle}
 
-\RequirePackage{l3keys2e}
+\ProvidesExplPackage{tudacolors}{\filedate}{\fileversion}{Color definition for TU Darmstadt's tuda-ci bundle}
 
 \str_if_exist:NF \g_ptxcd_department_str {
 	\str_new:N \g_ptxcd_department_str
@@ -38,7 +65,7 @@
 	mecheng .meta:n = {department=mecheng},
 }
 
-\ProcessKeysOptions{ptxcd/colors}
+\ProcessKeyOptions[ptxcd/colors]
 
 \RequirePackage{xcolor}
 
@@ -56,12 +83,6 @@
 	\colorlet{TUDa-Arrow}{TUDa-Primary2}
 }
 
-\clist_map_inline:nn {accent, textaccent, identbar} {
-	\cs_if_exist:cF {\string\color@\tl_use:c {g_ptxcd_color_#1_tl}} {
-		\cs_if_exist:cT {\string\color@TUDa-\tl_use:c {g_ptxcd_color_#1_tl}} {
-			\tl_gset:cx {g_ptxcd_color_#1_tl} {TUDa-\tl_use:c {g_ptxcd_color_#1_tl}}
-	}}
-}
 
 \clist_const:Nn \c_ptxcd_color_forbid_textaccent_clist {TUDa-0a,TUDa-5a,TUDa-6a,TUDa-6b,TUDa-7a}
 \clist_const:Nn \c_ptxcd_color_allow_blacktext_clist {TUDa-0a,TUDa-0b,TUDa-0c,TUDa-1a,TUDa-2a,TUDa-3a,TUDa-4a,TUDa-4b,TUDa-4c,TUDa-5a,TUDa-5b,TUDa-5c,TUDa-6a,TUDa-6b,TUDa-6c,TUDa-7a,TUDa-7b,TUDa-7c,TUDa-8a,TUDa-8b,TUDa-8c,TUDa-9a,TUDa-9b,TUDa-10a}
@@ -74,6 +95,12 @@
 
 \hook_new:n {ptxcd/init-colors}
 \hook_gput_code:nnn {ptxcd/init-colors} {tudacolors} {
+	\clist_map_inline:nn {accent, textaccent, identbar} {
+		\cs_if_exist:cF {\string\color@\tl_use:c {g_ptxcd_color_#1_tl}} {
+			\cs_if_exist:cT {\string\color@TUDa-\tl_use:c {g_ptxcd_color_#1_tl}} {
+				\tl_gset:cx {g_ptxcd_color_#1_tl} {TUDa-\tl_use:c {g_ptxcd_color_#1_tl}}
+		}}
+	}
 	\exp_args:Nnx \colorlet{accentcolor}{\g_ptxcd_color_accent_tl}
 	\bool_if:NTF \g_ptxcd_color_whitetext_bool {
 		\clist_if_in:NVTF \c_ptxcd_color_allow_whitetext_clist \g_ptxcd_color_accent_tl {
